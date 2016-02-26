@@ -402,7 +402,17 @@ ISR(TIMER0_OVF_vect)
 
 	/* trigger app-boot */
 	else if (boot_timeout == 1)
-		cmd = CMD_BOOT_APPLICATION;
+	{
+		/* don't exit bootlaoder if first page/reset vector is not programmed */
+		if (pgm_read_byte_near(0x01) == 0xFF)
+		{
+			boot_timeout = TIMEOUT;
+		}
+		else
+		{
+			cmd = CMD_BOOT_APPLICATION;
+		}
+	}
 }
 
 static void (*jump_to_app)(void) __attribute__ ((noreturn)) = 0x0000;
