@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 08/2010 by Olaf Rempel                                  *
  *   razzor@kopf-tisch.de                                                  *
+ *   Copyright (C) 2016 Tomek Nagisa, Kaworu                               *
+ *   kaworu@k2t.eu                                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -16,6 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/boot.h>
@@ -245,6 +248,9 @@ ISR(TWI_vect)
 	/* prev. SLA+R, data sent, ACK returned -> send data */
 	case 0xB8:
 		switch (cmd) {
+		case CMD_READ_MODE:
+			data = MODE_BOOTLOADER;
+			break;
 		case CMD_READ_VERSION:
 			data = info[bcnt++];
 			bcnt %= sizeof(info);
@@ -303,14 +309,18 @@ ISR(TIMER0_OVF_vect)
 	else if (boot_timeout == 1)
 	{
 		/* don't exit bootlaoder if first page/reset vector is not programmed */
+#if (AUTO_EXIT)
 		if (pgm_read_byte_near(0x01) == 0xFF)
 		{
+#endif
 			boot_timeout = TIMEOUT;
+#if (AUTO_EXIT)
 		}
 		else
 		{
 			cmd = CMD_BOOT_APPLICATION;
 		}
+#endif
 	}
 }
 

@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 08/2010 by Olaf Rempel                                  *
+ *   razzor@kopf-tisch.de                                                  *
  *   Copyright (C) 2016 Tomek Nagisa, Kaworu                               *
  *   kaworu@k2t.eu                                                         *
  *                                                                         *
@@ -41,30 +43,31 @@
  */
 
 #if defined (__AVR_ATmega8__)
-#define VERSION_STRING		"TWIBOOT m8v2.1"
+#define VERSION_STRING		"TWIBOOT m8v2.2"
 #define SIGNATURE_BYTES		0x1E, 0x93, 0x07
 
 #elif defined (__AVR_ATmega88__)
-#define VERSION_STRING		"TWIBOOT m88v2.1"
+#define VERSION_STRING		"TWIBOOT m88v2.2"
 #define SIGNATURE_BYTES		0x1E, 0x93, 0x0A
 
 #elif defined (__AVR_ATmega168__)
-#define VERSION_STRING		"TWIBOOT m168v2.1"
+#define VERSION_STRING		"TWIBOOT m168v2.2"
 #define SIGNATURE_BYTES		0x1E, 0x94, 0x06
 
 #elif defined (__AVR_ATmega328P__)
-#define VERSION_STRING		"TWIBOOTm328pv2.1"
+#define VERSION_STRING		"TWIBOOTm328pv2.2"
 #define SIGNATURE_BYTES		0x1E, 0x95, 0x0F
 
 #else
 #error MCU not supported
 #endif
 
-#define EEPROM_SUPPORT		1
-#define LED_SUPPORT		1
+#define EEPROM_SUPPORT	1
+#define LED_SUPPORT		0
+#define AUTO_EXIT		1
 
 /* 25ms @8MHz */
-#define TIMER_RELOAD		(0xFF - 195)
+#define TIMER_RELOAD	(0xFF - 195)
 
 /* 40 * 25ms */
 #define TIMEOUT			40
@@ -72,10 +75,10 @@
 #if LED_SUPPORT
 #define LED_INIT()		DDRB = ((1<<PORTB4) | (1<<PORTB5))
 #define LED_RT_ON()		PORTB |= (1<<PORTB4)
-#define LED_RT_OFF()		PORTB &= ~(1<<PORTB4)
+#define LED_RT_OFF()	PORTB &= ~(1<<PORTB4)
 #define LED_GN_ON()		PORTB |= (1<<PORTB5)
-#define LED_GN_OFF()		PORTB &= ~(1<<PORTB5)
-#define LED_GN_TOGGLE()		PORTB ^= (1<<PORTB5)
+#define LED_GN_OFF()	PORTB &= ~(1<<PORTB5)
+#define LED_GN_TOGGLE()	PORTB ^= (1<<PORTB5)
 #define LED_OFF()		PORTB = 0x00
 #else
 #define LED_INIT()
@@ -88,5 +91,5 @@
 #endif
 
 #ifndef TWI_ADDRESS
-#define TWI_ADDRESS		0x29
+#define TWI_ADDRESS		0x7C
 #endif
