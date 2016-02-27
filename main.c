@@ -391,11 +391,7 @@ int main(void)
 #endif
 
 	LED_OFF();
-
-	uint16_t wait = 0x0000;
-	do {
-		__asm volatile ("nop");
-	} while (--wait);
+	boot_rww_enable_safe();
 
 	jump_to_app();
 }
