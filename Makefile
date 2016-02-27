@@ -8,7 +8,7 @@ TARGET = twiboot
 SOURCE = $(wildcard *.c)
 
 # select MCU
-MCU = atmega88
+MCU = atmega328p
 
 AVRDUDE_PROG := -c avr910 -b 115200 -P /dev/ttyUSB0
 #AVRDUDE_PROG := -c dragon_isp -P usb
@@ -40,11 +40,11 @@ BOOTLOADER_START=0x3C00
 endif
 
 ifeq ($(MCU), atmega328p)
-# (8Mhz internal RC-Osz., 2.7V BOD)
+# (8Mhz internal RC-Osz., 2.7V BOD, EEPROMSAVE)
 AVRDUDE_MCU=m328p -F
-AVRDUDE_FUSES=lfuse:w:0xc2:m hfuse:w:0xdc:m efuse:w:0xfd:m
+AVRDUDE_FUSES=lfuse:w:0xe2:m hfuse:w:0xd0:m efuse:w:0xfd:m 
 
-BOOTLOADER_START=0x7C00
+BOOTLOADER_START=0x7000
 endif
 
 # ---------------------------------------------------------------------------
@@ -56,7 +56,7 @@ LDFLAGS = -Wl,-Map,$(@:.elf=.map),--cref,--relax,--gc-sections,--section-start=.
 # ---------------------------------------------------------------------------
 
 $(TARGET): $(TARGET).elf
-	@$(SIZE) -B -x --mcu=$(MCU) $<
+	@$(SIZE) -C -d --mcu=$(MCU) $<
 
 $(TARGET).elf: $(SOURCE:.c=.o)
 	@echo " Linking file:  $@"
