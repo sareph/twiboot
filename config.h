@@ -64,7 +64,7 @@
 
 #define EEPROM_SUPPORT	1
 #define LED_SUPPORT		0
-#define AUTO_EXIT		1
+#define AUTO_EXIT		0
 
 /* 25ms @8MHz */
 #define TIMER_RELOAD	(0xFF - 195)
