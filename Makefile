@@ -10,7 +10,7 @@ SOURCE = $(wildcard *.c)
 # select MCU
 MCU = atmega328p
 
-AVRDUDE_PROG := -c avr910 -b 115200 -P /dev/ttyUSB0
+AVRDUDE_PROG := -c usbasp
 #AVRDUDE_PROG := -c dragon_isp -P usb
 
 # ---------------------------------------------------------------------------
@@ -42,7 +42,7 @@ endif
 ifeq ($(MCU), atmega328p)
 # (8Mhz internal RC-Osz., 2.7V BOD, EEPROMSAVE)
 AVRDUDE_MCU=m328p -F
-AVRDUDE_FUSES=lfuse:w:0xe2:m hfuse:w:0xd0:m efuse:w:0xfd:m 
+AVRDUDE_FUSES=lfuse:w:0xe2:m hfuse:w:0xd0:m efuse:w:0xfd:m -Y 0 
 
 BOOTLOADER_START=0x7000
 endif
@@ -73,7 +73,7 @@ clean:
 	rm -rf $(SOURCE:.c=.o) $(SOURCE:.c=.lst) $(addprefix $(TARGET), .elf .map .lss .hex .bin)
 
 install: $(TARGET).elf
-	avrdude $(AVRDUDE_PROG) -p $(AVRDUDE_MCU) -U flash:w:$(<:.elf=.hex)
+	avrdude $(AVRDUDE_PROG) -p $(AVRDUDE_MCU) -U flash:w:$(<:.elf=.hex) -y
 
 fuses:
 	avrdude $(AVRDUDE_PROG) -p $(AVRDUDE_MCU) $(patsubst %,-U %, $(AVRDUDE_FUSES))
