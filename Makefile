@@ -72,7 +72,7 @@ $(TARGET).elf: $(SOURCE:.c=.o)
 clean:
 	rm -rf $(SOURCE:.c=.o) $(SOURCE:.c=.lst) $(addprefix $(TARGET), .elf .map .lss .hex .bin)
 
-install: $(TARGET).elf
+program: $(TARGET).elf
 	avrdude $(AVRDUDE_PROG) -p $(AVRDUDE_MCU) -U flash:w:$(<:.elf=.hex) -y
 
 fuses:
