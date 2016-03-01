@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 08/2010 by Olaf Rempel                                  *
  *   razzor@kopf-tisch.de                                                  *
- *   Copyright (C) 2016 Tomek Nagisa, Kaworu                               *
+ *   Copyright (C) 2016 Tomek Nagisa                                       *
  *   kaworu@k2t.eu                                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -266,13 +266,17 @@ ISR(TWI_vect)
 							break;
 #if (EEPROM_SUPPORT)
 						case CMD_WRITE_EEPROM:
+						{
 							write_eeprom_byte(data);
 							bcnt++;
 							break;
+						}
 #endif
 						default:
+						{
 							ack = (0 << TWEA);
 							break;
+						}
 					}
 					break;
 				}
@@ -299,29 +303,39 @@ ISR(TWI_vect)
 			switch (cmd)
 			{
 				case CMD_READ_MODE:
+				{
 					data = MODE_BOOTLOADER;
 					break;
+				}
 				case CMD_READ_VERSION:
+				{
 					data = info[bcnt++];
 					bcnt %= sizeof(info);
 					break;
-
+				}
 				case CMD_READ_CHIPINFO:
+				{
 					data = chipinfo[bcnt++];
 					bcnt %= sizeof(chipinfo);
 					break;
-
+				}
 				case CMD_READ_FLASH:
+				{
 					data = pgm_read_byte_near(addr++);
 					break;
+				}
 #if (EEPROM_SUPPORT)
 				case CMD_READ_EEPROM:
+				{
 					data = read_eeprom_byte();
 					break;
+				}
 #endif
 				default:
+				{
 					data = 0xFF;
 					break;
+				}
 			}
 
 			TWDR = data;

@@ -1,7 +1,7 @@
 /***************************************************************************
  *   Copyright (C) 08/2010 by Olaf Rempel                                  *
  *   razzor@kopf-tisch.de                                                  *
- *   Copyright (C) 2016 Tomek Nagisa, Kaworu                               *
+ *   Copyright (C) 2016 Tomek Nagisa                                       *
  *   kaworu@k2t.eu                                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
