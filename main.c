@@ -19,12 +19,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#define F_CPU 8000000
- 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/boot.h>
-#include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "config.h"
 #include "commands.h"
